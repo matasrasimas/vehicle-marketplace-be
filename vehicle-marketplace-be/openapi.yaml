@@ -1,0 +1,771 @@
+openapi: 3.0.3
+info:
+  title: Vehicle marketplace API
+  description: API for vehicle marketplace app.
+  version: 1.0.0
+paths:
+  /categories:
+    get:
+      summary: Retrieve a list of categories
+      operationId: retrieveCategories
+      tags:
+        - Categories
+      description: |
+        Retrieves a list of all categories.
+      responses:
+        '200':
+          description: Returns a list of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Upsert (create or update) a category
+      operationId: upsertCategory
+      tags:
+        - Categories
+      description: |
+        Creates a new category if it does not exist, or updates the existing category if the `id` already exists in the database.
+        Returns 201 when the category is successfully upserted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryInput'
+      responses:
+        '201':
+          description: Category successfully created/updated, no content returned
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+  
+  /categories/{category-id}:
+    get:
+      summary: Retrieve a category by ID
+      operationId: getCategoryById
+      tags:
+        - Categories
+      description: |
+        Retrieves the details of a category by its unique identifier.
+      parameters:
+        - name: category-id
+          in: path
+          required: true
+          description: The unique identifier of the category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The category details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          description: Category by specified ID is not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a category by ID
+      operationId: deleteCategory
+      tags:
+        - Categories
+      description: |
+        Deletes a category by its unique identifier. Returns `204 No Content` when the category is successfully deleted.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the category to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Category successfully deleted, no content returned
+        '500':
+          description: Internal server error
+
+  /categories/{category-id}/posts:
+    get:
+      summary: Retrieve category's posts
+      operationId: getPostsByCategoryId
+      tags:
+        - Categories
+      description: |
+        Retrieves posts that belongs to a category, specified by ID
+      parameters:
+        - name: category-id
+          in: path
+          required: true
+          description: The unique identifier of the category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of category's posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '500':
+          description: Internal server error
+
+  /posts:
+    get:
+      summary: Retrieve a list of posts
+      operationId: retrievePosts
+      tags:
+        - Posts
+      description: |
+        Retrieves a list of all posts.
+      responses:
+        '200':
+          description: A list of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Upsert a post (create or update)
+      operationId: upsertPost
+      tags:
+        - Posts
+      description: |
+        Creates a new post if it does not exist, or updates the existing post if the `id` already exists in the database.
+        Returns 201 when the category is successfully upserted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Post successfully created or updated
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+  /posts/{post-id}:
+    get:
+      summary: Retrieve a post by ID
+      operationId: getPostById
+      tags:
+        - Posts
+      description: |
+        Retrieves the details of a specific post by its unique identifier.
+      parameters:
+        - name: post-id
+          in: path
+          required: true
+          description: The unique identifier of the post
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The post details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post by specified ID not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a post by ID
+      operationId: deletePost
+      tags:
+        - Posts
+      description: |
+        Deletes a specific post by its unique identifier. Returns `204 No Content` when the post is successfully deleted.
+      parameters:
+        - name: post-id
+          in: path
+          required: true
+          description: The unique identifier of the post to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Post successfully deleted, no content returned
+        '500':
+          description: Internal server error
+
+  /posts/{post-id}/comments:
+    get:
+      summary: Retrieve post's comments
+      operationId: getCommentsByPostId
+      tags:
+        - Posts
+      description: |
+        Retrieves comments that belongs to a post, specified by ID
+      parameters:
+        - name: category-id
+          in: path
+          required: true
+          description: The unique identifier of the category
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of post's comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '500':
+          description: Internal server error
+
+  /comments:
+    get:
+      summary: Retrieve a list of comments
+      operationId: retrieveComments
+      tags:
+        - Comments
+      description: |
+        Retrieves a list of all comments.
+      responses:
+        '200':
+          description: A list of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Upsert a comment (create or update)
+      operationId: upsertComment
+      tags:
+        - Comments
+      description: |
+        Creates a new comment if it does not exist, or updates the existing comment if the `id` already exists in the database.
+        Returns 201 when the category is successfully upserted.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentInput'
+      responses:
+        '201':
+          description: Comment successfully created or updated
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+  /comments/{comment-id}:
+    get:
+      summary: Retrieve a comment by ID
+      operationId: getCommentById
+      tags:
+        - Comments
+      description: |
+        Retrieves the details of a specific comment by its unique identifier.
+      parameters:
+        - name: comment-id
+          in: path
+          required: true
+          description: The unique identifier of the comment
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The comment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '404':
+          description: Comment not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a comment by ID
+      operationId: deleteComment
+      tags:
+        - Comments
+      description: |
+        Deletes a specific comment by its unique identifier. Returns `204 No Content` when the comment is successfully deleted.
+      parameters:
+        - name: comment-id
+          in: path
+          required: true
+          description: The unique identifier of the comment to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Comment successfully deleted, no content returned
+        '500':
+          description: Internal server error
+
+  /users:
+    get:
+      summary: Retrieve a list of users
+      operationId: retrieveUsers
+      tags:
+        - Users
+      description: |
+        Retrieves a list of all users.
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a user
+      operationId: createUser
+      tags:
+        - Users
+      description: |
+        Creates a new user. Returns 201 when the user is successfully created.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        '201':
+          description: User successfully created
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+    put:
+      summary: Update a user
+      operationId: updateUser
+      tags:
+        - Users
+      description: |
+        Updates a new user. Returns 201 when the user is successfully updated.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUser'
+      responses:
+        '201':
+          description: User successfully updated
+        '400':
+          description: Invalid request body
+        '500':
+          description: Internal server error
+
+  /users/{user-id}:
+    get:
+      summary: Retrieve a user by ID
+      operationId: getUserById
+      tags:
+        - Users
+      description: |
+        Retrieves the details of a specific user by their unique identifier.
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: The unique identifier of the user
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The user details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: Delete a user by ID
+      operationId: deleteUser
+      tags:
+        - Users
+      description: |
+        Deletes a specific user by their unique identifier. Returns `204 No Content` when the user is successfully deleted.
+      parameters:
+        - name: user-id
+          in: path
+          required: true
+          description: The unique identifier of the user to delete
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: User successfully deleted, no content returned
+        '500':
+          description: Internal server error
+
+  /users/{user-id}/posts:
+    get:
+      summary: Retrieve a list of user's posts
+      operationId: retrievePostsByUserId
+      tags:
+        - Posts
+      description: |
+        Retrieves a list of posts, that belong to user with a specified ID.
+      responses:
+        '200':
+          description: A list of user's posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '500':
+          description: Internal server error
+
+
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the category
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          description: The title of category
+          example: "Trucks"
+
+    CategoryDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the category
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        title:
+          type: string
+          description: The title of category
+          example: "Trucks"
+      required:
+        - id
+        - title
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the post
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        category_id:
+          type: string
+          format: uuid
+          description: Unique post ID associated with the category
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        user_id:
+          type: string
+          format: uuid
+          description: The user ID of the post's author
+          example: "234e4567-e89b-12d3-a456-426614174000"
+        description:
+          type: string
+          description: The description of the post
+          example: "A brand new car"
+        brand:
+          type: string
+          description: The brand of a car post
+          example: "Honda"
+        model:
+          type: string
+          description: The model of a car post
+          example: "Civic"
+        manufacture_year:
+          type: number
+          format: integer
+          description: The manufacture year of a car
+          example: 2002
+        mileage:
+          type: number
+          format: double
+          description: The mileage of a car in kilometers
+          example: 250000
+        price:
+          type: number
+          format: double
+          description: The price of the item being posted
+          example: 999.99
+
+    PostDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the post
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        category_id:
+          type: string
+          format: uuid
+          description: Unique post ID associated with the category
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        user_id:
+          type: string
+          format: uuid
+          description: The user ID of the post's author
+          example: "234e4567-e89b-12d3-a456-426614174000"
+        description:
+          type: string
+          description: The description of the post
+          example: "A brand new car"
+        brand:
+          type: string
+          description: The brand of a car post
+          example: "Honda"
+        model:
+          type: string
+          description: The model of a car post
+          example: "Civic"
+        manufacture_year:
+          type: number
+          format: integer
+          description: The manufacture year of a car
+          example: 2002
+        mileage:
+          type: number
+          format: double
+          description: The mileage of a car in kilometers
+          example: 250000
+        price:
+          type: number
+          format: double
+          description: The price of the item being posted
+          example: 999.99
+      required:
+        - id
+        - category_id
+        - user_id
+        - brand
+        - model
+        - manufacture_year
+        - price
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the comment
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        post_id:
+          type: string
+          format: uuid
+          description: Unique post ID to which the comment belongs
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        user_id:
+          type: string
+          format: uuid
+          description: The user ID of the comment's author
+          example: "234e4567-e89b-12d3-a456-426614174000"
+        content:
+          type: string
+          description: The content of the comment
+          example: "This is a great car!"
+        rating:
+          type: integer
+          description: Rating between 1 and 5
+          example: 4
+          minimum: 1
+          maximum: 5
+
+    CommentDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique identifier for the comment (UUID). If it exists, the comment will be updated; if it does not exist, the comment will be created.
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        post_id:
+          type: string
+          format: uuid
+          description: Unique post ID to which the comment belongs
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        user_id:
+          type: string
+          format: uuid
+          description: The user ID of the comment's author
+          example: "234e4567-e89b-12d3-a456-426614174000"
+        content:
+          type: string
+          description: The content of the comment
+          example: "This is a great post!"
+        rating:
+          type: integer
+          description: Rating between 1 and 5
+          example: 5
+          minimum: 1
+          maximum: 5
+      required:
+        - id
+        - post_id
+        - user_id
+        - content
+        - rating
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        firstName:
+          type: string
+          description: The first name of the user
+          example: "John"
+        lastName:
+          type: string
+          description: The last name of the user
+          example: "Doe"
+        phoneNumber:
+          type: string
+          description: The user's phone number
+          example: "+1234567890"
+        username:
+          type: string
+          description: The unique username of the user
+          example: "johndoe"
+        password_hash:
+          type: string
+          description: The hashed password of the user
+          example: "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36.."
+        role:
+          type: string
+          description: The role of the user
+          enum:
+            - USER
+            - ADMIN
+          example: "USER"
+
+    CreateUser:
+      type: object
+      properties:
+        firstName:
+          type: string
+          description: The first name of the user
+          example: "John"
+        lastName:
+          type: string
+          description: The last name of the user
+          example: "Doe"
+        phoneNumber:
+          type: string
+          description: The user's phone number
+          example: "+1234567890"
+        username:
+          type: string
+          description: The unique username of the user
+          example: "johndoe"
+        password_hash:
+          type: string
+          description: The hashed password of the user
+          example: "$2a$10$EixZaYVK1fsbw1ZfbX3OXePaWxn96p36.."
+        role:
+          type: string
+          description: The role of the user
+          enum:
+            - USER
+            - ADMIN
+          example: "USER"
+      required:
+        - firstName
+        - lastName
+        - phoneNumber
+        - username
+        - password_hash
+        - role
+
+    UpdateUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user
+          example: "b6d9b2c1-1a5b-4567-9a3a-20f9b8ef5f7e"
+        firstName:
+          type: string
+          description: The first name of the user
+          example: "John"
+        lastName:
+          type: string
+          description: The last name of the user
+          example: "Doe"
+        phoneNumber:
+          type: string
+          description: The user's phone number
+          example: "+1234567890"
+        username:
+          type: string
+          description: The unique username of the user
+          example: "johndoe"
+        role:
+          type: string
+          description: The role of the user
+          enum:
+            - USER
+            - ADMIN
+          example: "USER"
+        required:
+          - id
+          - firstName
+          - lastName
+          - phoneNumber
+          - username
+          - role
