@@ -4,8 +4,6 @@
 package org.example.generated.jooq.tables.records;
 
 
-import java.util.UUID;
-
 import org.example.generated.jooq.tables.Posts;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -20,45 +18,81 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>posts.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setId(UUID value) {
+    @Deprecated
+    public void setId(Object value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>posts.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getId() {
-        return (UUID) get(0);
+    @Deprecated
+    public Object getId() {
+        return get(0);
     }
 
     /**
-     * Setter for <code>posts.category_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setCategoryId(UUID value) {
+    @Deprecated
+    public void setCategoryId(Object value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>posts.category_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getCategoryId() {
-        return (UUID) get(1);
+    @Deprecated
+    public Object getCategoryId() {
+        return get(1);
     }
 
     /**
-     * Setter for <code>posts.user_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setUserId(UUID value) {
+    @Deprecated
+    public void setUserId(Object value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>posts.user_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getUserId() {
-        return (UUID) get(2);
+    @Deprecated
+    public Object getUserId() {
+        return get(2);
     }
 
     /**
@@ -150,7 +184,7 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Record1<UUID> key() {
+    public Record1<Object> key() {
         return (Record1) super.key();
     }
 
@@ -168,7 +202,7 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
     /**
      * Create a detached, initialised PostsRecord
      */
-    public PostsRecord(UUID id, UUID categoryId, UUID userId, String description, String brand, String model, Integer manufactureYear, Double mileage, Double price) {
+    public PostsRecord(Object id, Object categoryId, Object userId, String description, String brand, String model, Integer manufactureYear, Double mileage, Double price) {
         super(Posts.POSTS);
 
         setId(id);

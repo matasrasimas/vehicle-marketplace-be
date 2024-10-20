@@ -7,13 +7,8 @@ package org.example.generated.jooq;
 import org.example.generated.jooq.tables.Categories;
 import org.example.generated.jooq.tables.Comments;
 import org.example.generated.jooq.tables.FlywaySchemaHistory;
-import org.example.generated.jooq.tables.PgpArmorHeaders;
 import org.example.generated.jooq.tables.Posts;
 import org.example.generated.jooq.tables.Users;
-import org.example.generated.jooq.tables.records.PgpArmorHeadersRecord;
-import org.jooq.Configuration;
-import org.jooq.Field;
-import org.jooq.Result;
 
 
 /**
@@ -36,45 +31,6 @@ public class Tables {
      * The table <code>flyway_schema_history</code>.
      */
     public static final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
-
-    /**
-     * The table <code>pgp_armor_headers</code>.
-     */
-    public static final PgpArmorHeaders PGP_ARMOR_HEADERS = PgpArmorHeaders.PGP_ARMOR_HEADERS;
-
-    /**
-     * Call <code>pgp_armor_headers</code>.
-     */
-    public static Result<PgpArmorHeadersRecord> PGP_ARMOR_HEADERS(
-          Configuration configuration
-        , String __1
-    ) {
-        return configuration.dsl().selectFrom(org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-              __1
-        )).fetch();
-    }
-
-    /**
-     * Get <code>pgp_armor_headers</code> as a table.
-     */
-    public static PgpArmorHeaders PGP_ARMOR_HEADERS(
-          String __1
-    ) {
-        return org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-            __1
-        );
-    }
-
-    /**
-     * Get <code>pgp_armor_headers</code> as a table.
-     */
-    public static PgpArmorHeaders PGP_ARMOR_HEADERS(
-          Field<String> __1
-    ) {
-        return org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-            __1
-        );
-    }
 
     /**
      * The table <code>posts</code>.

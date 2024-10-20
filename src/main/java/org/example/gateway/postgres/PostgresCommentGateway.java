@@ -70,9 +70,9 @@ public class PostgresCommentGateway implements CommentGateway {
 
     private Comment buildComment(CommentsRecord record) {
         return new Comment(
-                record.getId(),
-                record.getPostId(),
-                record.getUserId(),
+                UUID.fromString(record.getId().toString()),
+                UUID.fromString(record.getPostId().toString()),
+                UUID.fromString(record.getUserId().toString()),
                 record.getContent(),
                 record.getRating()
         );

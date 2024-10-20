@@ -4,18 +4,13 @@
 package org.example.generated.jooq.tables;
 
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.example.generated.jooq.DefaultSchema;
-import org.example.generated.jooq.Indexes;
 import org.example.generated.jooq.Keys;
 import org.example.generated.jooq.tables.records.FlywaySchemaHistoryRecord;
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
@@ -61,22 +56,22 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
     /**
      * The column <code>flyway_schema_history.version</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, String> VERSION = createField(DSL.name("version"), SQLDataType.VARCHAR(50), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> VERSION = createField(DSL.name("version"), SQLDataType.NVARCHAR(50), this, "");
 
     /**
      * The column <code>flyway_schema_history.description</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.VARCHAR(200).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> DESCRIPTION = createField(DSL.name("description"), SQLDataType.NVARCHAR(200), this, "");
 
     /**
      * The column <code>flyway_schema_history.type</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.VARCHAR(20).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> TYPE = createField(DSL.name("type"), SQLDataType.NVARCHAR(20).nullable(false), this, "");
 
     /**
      * The column <code>flyway_schema_history.script</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, String> SCRIPT = createField(DSL.name("script"), SQLDataType.VARCHAR(1000).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> SCRIPT = createField(DSL.name("script"), SQLDataType.NVARCHAR(1000).nullable(false), this, "");
 
     /**
      * The column <code>flyway_schema_history.checksum</code>.
@@ -86,12 +81,18 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
     /**
      * The column <code>flyway_schema_history.installed_by</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, String> INSTALLED_BY = createField(DSL.name("installed_by"), SQLDataType.VARCHAR(100).nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, String> INSTALLED_BY = createField(DSL.name("installed_by"), SQLDataType.NVARCHAR(100).nullable(false), this, "");
 
     /**
-     * The column <code>flyway_schema_history.installed_on</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<FlywaySchemaHistoryRecord, LocalDateTime> INSTALLED_ON = createField(DSL.name("installed_on"), SQLDataType.LOCALDATETIME(6).nullable(false).defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.LOCALDATETIME)), this, "");
+    @Deprecated
+    public final TableField<FlywaySchemaHistoryRecord, Object> INSTALLED_ON = createField(DSL.name("installed_on"), org.jooq.impl.SQLDataType.OTHER.nullable(false).defaultValue(DSL.field(DSL.raw("'(getdate())'"), org.jooq.impl.SQLDataType.OTHER)), this, "");
 
     /**
      * The column <code>flyway_schema_history.execution_time</code>.
@@ -101,7 +102,7 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
     /**
      * The column <code>flyway_schema_history.success</code>.
      */
-    public final TableField<FlywaySchemaHistoryRecord, Boolean> SUCCESS = createField(DSL.name("success"), SQLDataType.BOOLEAN.nullable(false), this, "");
+    public final TableField<FlywaySchemaHistoryRecord, Boolean> SUCCESS = createField(DSL.name("success"), SQLDataType.BIT.nullable(false), this, "");
 
     private FlywaySchemaHistory(Name alias, Table<FlywaySchemaHistoryRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -138,13 +139,8 @@ public class FlywaySchemaHistory extends TableImpl<FlywaySchemaHistoryRecord> {
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.FLYWAY_SCHEMA_HISTORY_S_IDX);
-    }
-
-    @Override
     public UniqueKey<FlywaySchemaHistoryRecord> getPrimaryKey() {
-        return Keys.FLYWAY_SCHEMA_HISTORY_PK;
+        return Keys.PK_FLYWAY_SCHEMA_HISTORY;
     }
 
     @Override

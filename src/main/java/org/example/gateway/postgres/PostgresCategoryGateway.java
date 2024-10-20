@@ -22,7 +22,7 @@ public class PostgresCategoryGateway implements CategoryGateway {
     public List<Category> retrieve() {
         return dsl.selectFrom(CATEGORIES)
                 .fetch(record -> new Category(
-                        record.getId(),
+                        UUID.fromString(record.getId().toString()),
                         record.getTitle()
                 ));
     }
@@ -32,7 +32,7 @@ public class PostgresCategoryGateway implements CategoryGateway {
         return dsl.selectFrom(CATEGORIES)
                 .where(CATEGORIES.ID.eq(UUID.fromString(categoryId)))
                 .fetchOptional(record -> new Category(
-                        record.getId(),
+                        UUID.fromString(record.getId().toString()),
                         record.getTitle()
                 ));
     }

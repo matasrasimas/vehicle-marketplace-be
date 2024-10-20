@@ -4,8 +4,6 @@
 package org.example.generated.jooq.tables.records;
 
 
-import java.util.UUID;
-
 import org.example.generated.jooq.tables.Categories;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -20,17 +18,29 @@ public class CategoriesRecord extends UpdatableRecordImpl<CategoriesRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>categories.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setId(UUID value) {
+    @Deprecated
+    public void setId(Object value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>categories.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getId() {
-        return (UUID) get(0);
+    @Deprecated
+    public Object getId() {
+        return get(0);
     }
 
     /**
@@ -52,7 +62,7 @@ public class CategoriesRecord extends UpdatableRecordImpl<CategoriesRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Record1<UUID> key() {
+    public Record1<Object> key() {
         return (Record1) super.key();
     }
 
@@ -70,7 +80,7 @@ public class CategoriesRecord extends UpdatableRecordImpl<CategoriesRecord> {
     /**
      * Create a detached, initialised CategoriesRecord
      */
-    public CategoriesRecord(UUID id, String title) {
+    public CategoriesRecord(Object id, String title) {
         super(Categories.CATEGORIES);
 
         setId(id);

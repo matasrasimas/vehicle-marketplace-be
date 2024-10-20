@@ -5,21 +5,15 @@ package org.example.generated.jooq.tables;
 
 
 import java.util.Collection;
-import java.util.UUID;
 
 import org.example.generated.jooq.DefaultSchema;
 import org.example.generated.jooq.Keys;
-import org.example.generated.jooq.tables.Posts.PostsPath;
 import org.example.generated.jooq.tables.records.CategoriesRecord;
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -55,14 +49,20 @@ public class Categories extends TableImpl<CategoriesRecord> {
     }
 
     /**
-     * The column <code>categories.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<CategoriesRecord, UUID> ID = createField(DSL.name("id"), SQLDataType.UUID.nullable(false), this, "");
+    @Deprecated
+    public final TableField<CategoriesRecord, Object> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.OTHER.nullable(false), this, "");
 
     /**
      * The column <code>categories.title</code>.
      */
-    public final TableField<CategoriesRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<CategoriesRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     private Categories(Name alias, Table<CategoriesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -93,37 +93,6 @@ public class Categories extends TableImpl<CategoriesRecord> {
         this(DSL.name("categories"), null);
     }
 
-    public <O extends Record> Categories(Table<O> path, ForeignKey<O, CategoriesRecord> childPath, InverseForeignKey<O, CategoriesRecord> parentPath) {
-        super(path, childPath, parentPath, CATEGORIES);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class CategoriesPath extends Categories implements Path<CategoriesRecord> {
-        public <O extends Record> CategoriesPath(Table<O> path, ForeignKey<O, CategoriesRecord> childPath, InverseForeignKey<O, CategoriesRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private CategoriesPath(Name alias, Table<CategoriesRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public CategoriesPath as(String alias) {
-            return new CategoriesPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public CategoriesPath as(Name alias) {
-            return new CategoriesPath(alias, this);
-        }
-
-        @Override
-        public CategoriesPath as(Table<?> alias) {
-            return new CategoriesPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
@@ -131,19 +100,7 @@ public class Categories extends TableImpl<CategoriesRecord> {
 
     @Override
     public UniqueKey<CategoriesRecord> getPrimaryKey() {
-        return Keys.CATEGORIES_PKEY;
-    }
-
-    private transient PostsPath _posts;
-
-    /**
-     * Get the implicit to-many join path to the <code>public.posts</code> table
-     */
-    public PostsPath posts() {
-        if (_posts == null)
-            _posts = new PostsPath(this, null, Keys.POSTS__POSTS_CATEGORY_ID_FKEY.getInverseKey());
-
-        return _posts;
+        return Keys.PK_CATEGORIES;
     }
 
     @Override

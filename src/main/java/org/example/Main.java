@@ -62,14 +62,20 @@ public class Main {
         hikariConfig.setMinimumIdle(5);
         hikariConfig.setIdleTimeout(30000);
         hikariConfig.setConnectionTimeout(30000);
-        hikariConfig.setDriverClassName("org.postgresql.Driver");
+        hikariConfig.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
         HikariDataSource hikariDataSource = new HikariDataSource(hikariConfig);
 
         Configuration jooqConfig = new DefaultConfiguration()
                 .set(new ThreadLocalTransactionProvider(new DataSourceConnectionProvider(hikariDataSource)))
-                .set(SQLDialect.POSTGRES);
+                .set(SQLDialect.DEFAULT);
         DSLContext jooqDSLContext = DSL.using(jooqConfig);
+
+        Flyway.configure()
+                .locations("classpath:db/migration", "org/example/db/migration")
+                .dataSource(hikariDataSource)
+                .load()
+                .migrate();
 
         CategoryD2DTOConverter categoryD2DTOConverter = new CategoryD2DTOConverter();
         UpsertCategoryDTO2DConverter upsertCategoryDTO2DConverter = new UpsertCategoryDTO2DConverter();
@@ -224,12 +230,6 @@ public class Main {
         AuthenticateForAdminRoute authenticateForAdminRoute = new AuthenticateForAdminRoute(authenticateUseCase);
         AuthenticateForUserRoute authenticateForUserRoute = new AuthenticateForUserRoute(authenticateUseCase);
         ReauthenticateRoute reauthenticateRoute = new ReauthenticateRoute(reauthenticateUseCase);
-
-        Flyway.configure()
-                .locations("classpath:db/migration", "org/example/db/migration")
-                .dataSource(hikariDataSource)
-                .load()
-                .migrate();
 
         AppBuilder app = new AppBuilder(
                 retrieveCategoriesRoute,

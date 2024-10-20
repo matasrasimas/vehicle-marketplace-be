@@ -4,26 +4,16 @@
 package org.example.generated.jooq.tables;
 
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
 import org.example.generated.jooq.DefaultSchema;
 import org.example.generated.jooq.Keys;
-import org.example.generated.jooq.tables.Posts.PostsPath;
-import org.example.generated.jooq.tables.Users.UsersPath;
 import org.example.generated.jooq.tables.records.CommentsRecord;
-import org.jooq.Check;
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -33,7 +23,6 @@ import org.jooq.TableField;
 import org.jooq.TableOptions;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
-import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
@@ -60,24 +49,42 @@ public class Comments extends TableImpl<CommentsRecord> {
     }
 
     /**
-     * The column <code>comments.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<CommentsRecord, UUID> ID = createField(DSL.name("id"), SQLDataType.UUID.nullable(false), this, "");
+    @Deprecated
+    public final TableField<CommentsRecord, Object> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.OTHER.nullable(false), this, "");
 
     /**
-     * The column <code>comments.post_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<CommentsRecord, UUID> POST_ID = createField(DSL.name("post_id"), SQLDataType.UUID.nullable(false), this, "");
+    @Deprecated
+    public final TableField<CommentsRecord, Object> POST_ID = createField(DSL.name("post_id"), org.jooq.impl.SQLDataType.OTHER.nullable(false), this, "");
 
     /**
-     * The column <code>comments.user_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<CommentsRecord, UUID> USER_ID = createField(DSL.name("user_id"), SQLDataType.UUID.nullable(false), this, "");
+    @Deprecated
+    public final TableField<CommentsRecord, Object> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.OTHER.nullable(false), this, "");
 
     /**
      * The column <code>comments.content</code>.
      */
-    public final TableField<CommentsRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<CommentsRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>comments.rating</code>.
@@ -113,37 +120,6 @@ public class Comments extends TableImpl<CommentsRecord> {
         this(DSL.name("comments"), null);
     }
 
-    public <O extends Record> Comments(Table<O> path, ForeignKey<O, CommentsRecord> childPath, InverseForeignKey<O, CommentsRecord> parentPath) {
-        super(path, childPath, parentPath, COMMENTS);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class CommentsPath extends Comments implements Path<CommentsRecord> {
-        public <O extends Record> CommentsPath(Table<O> path, ForeignKey<O, CommentsRecord> childPath, InverseForeignKey<O, CommentsRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private CommentsPath(Name alias, Table<CommentsRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public CommentsPath as(String alias) {
-            return new CommentsPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public CommentsPath as(Name alias) {
-            return new CommentsPath(alias, this);
-        }
-
-        @Override
-        public CommentsPath as(Table<?> alias) {
-            return new CommentsPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
@@ -151,43 +127,7 @@ public class Comments extends TableImpl<CommentsRecord> {
 
     @Override
     public UniqueKey<CommentsRecord> getPrimaryKey() {
-        return Keys.COMMENTS_PKEY;
-    }
-
-    @Override
-    public List<ForeignKey<CommentsRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.COMMENTS__COMMENTS_POST_ID_FKEY, Keys.COMMENTS__COMMENTS_USER_ID_FKEY);
-    }
-
-    private transient PostsPath _posts;
-
-    /**
-     * Get the implicit join path to the <code>public.posts</code> table.
-     */
-    public PostsPath posts() {
-        if (_posts == null)
-            _posts = new PostsPath(this, Keys.COMMENTS__COMMENTS_POST_ID_FKEY, null);
-
-        return _posts;
-    }
-
-    private transient UsersPath _users;
-
-    /**
-     * Get the implicit join path to the <code>public.users</code> table.
-     */
-    public UsersPath users() {
-        if (_users == null)
-            _users = new UsersPath(this, Keys.COMMENTS__COMMENTS_USER_ID_FKEY, null);
-
-        return _users;
-    }
-
-    @Override
-    public List<Check<CommentsRecord>> getChecks() {
-        return Arrays.asList(
-            Internal.createCheck(this, DSL.name("comments_rating_check"), "(((rating >= 1) AND (rating <= 5)))", true)
-        );
+        return Keys.PK_COMMENTS;
     }
 
     @Override

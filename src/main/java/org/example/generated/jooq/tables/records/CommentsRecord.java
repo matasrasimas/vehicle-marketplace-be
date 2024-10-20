@@ -4,8 +4,6 @@
 package org.example.generated.jooq.tables.records;
 
 
-import java.util.UUID;
-
 import org.example.generated.jooq.tables.Comments;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -20,45 +18,81 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Setter for <code>comments.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setId(UUID value) {
+    @Deprecated
+    public void setId(Object value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>comments.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getId() {
-        return (UUID) get(0);
+    @Deprecated
+    public Object getId() {
+        return get(0);
     }
 
     /**
-     * Setter for <code>comments.post_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setPostId(UUID value) {
+    @Deprecated
+    public void setPostId(Object value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>comments.post_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getPostId() {
-        return (UUID) get(1);
+    @Deprecated
+    public Object getPostId() {
+        return get(1);
     }
 
     /**
-     * Setter for <code>comments.user_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setUserId(UUID value) {
+    @Deprecated
+    public void setUserId(Object value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>comments.user_id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public UUID getUserId() {
-        return (UUID) get(2);
+    @Deprecated
+    public Object getUserId() {
+        return get(2);
     }
 
     /**
@@ -94,7 +128,7 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Record1<UUID> key() {
+    public Record1<Object> key() {
         return (Record1) super.key();
     }
 
@@ -112,7 +146,7 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
     /**
      * Create a detached, initialised CommentsRecord
      */
-    public CommentsRecord(UUID id, UUID postId, UUID userId, String content, Integer rating) {
+    public CommentsRecord(Object id, Object postId, Object userId, String content, Integer rating) {
         super(Comments.COMMENTS);
 
         setId(id);

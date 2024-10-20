@@ -5,22 +5,15 @@ package org.example.generated.jooq.tables;
 
 
 import java.util.Collection;
-import java.util.UUID;
 
 import org.example.generated.jooq.DefaultSchema;
 import org.example.generated.jooq.Keys;
-import org.example.generated.jooq.tables.Comments.CommentsPath;
-import org.example.generated.jooq.tables.Posts.PostsPath;
 import org.example.generated.jooq.tables.records.UsersRecord;
 import org.jooq.Condition;
 import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.InverseForeignKey;
 import org.jooq.Name;
-import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
-import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -56,39 +49,45 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     /**
-     * The column <code>users.id</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public final TableField<UsersRecord, UUID> ID = createField(DSL.name("id"), SQLDataType.UUID.nullable(false), this, "");
+    @Deprecated
+    public final TableField<UsersRecord, Object> ID = createField(DSL.name("id"), org.jooq.impl.SQLDataType.OTHER.nullable(false), this, "");
 
     /**
      * The column <code>users.first_name</code>.
      */
-    public final TableField<UsersRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> FIRST_NAME = createField(DSL.name("first_name"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>users.last_name</code>.
      */
-    public final TableField<UsersRecord, String> LAST_NAME = createField(DSL.name("last_name"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> LAST_NAME = createField(DSL.name("last_name"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>users.phone_number</code>.
      */
-    public final TableField<UsersRecord, String> PHONE_NUMBER = createField(DSL.name("phone_number"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> PHONE_NUMBER = createField(DSL.name("phone_number"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>users.username</code>.
      */
-    public final TableField<UsersRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> USERNAME = createField(DSL.name("username"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>users.password_hash</code>.
      */
-    public final TableField<UsersRecord, String> PASSWORD_HASH = createField(DSL.name("password_hash"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> PASSWORD_HASH = createField(DSL.name("password_hash"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     /**
      * The column <code>users.role</code>.
      */
-    public final TableField<UsersRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.CLOB.nullable(false), this, "");
+    public final TableField<UsersRecord, String> ROLE = createField(DSL.name("role"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
@@ -119,37 +118,6 @@ public class Users extends TableImpl<UsersRecord> {
         this(DSL.name("users"), null);
     }
 
-    public <O extends Record> Users(Table<O> path, ForeignKey<O, UsersRecord> childPath, InverseForeignKey<O, UsersRecord> parentPath) {
-        super(path, childPath, parentPath, USERS);
-    }
-
-    /**
-     * A subtype implementing {@link Path} for simplified path-based joins.
-     */
-    public static class UsersPath extends Users implements Path<UsersRecord> {
-        public <O extends Record> UsersPath(Table<O> path, ForeignKey<O, UsersRecord> childPath, InverseForeignKey<O, UsersRecord> parentPath) {
-            super(path, childPath, parentPath);
-        }
-        private UsersPath(Name alias, Table<UsersRecord> aliased) {
-            super(alias, aliased);
-        }
-
-        @Override
-        public UsersPath as(String alias) {
-            return new UsersPath(DSL.name(alias), this);
-        }
-
-        @Override
-        public UsersPath as(Name alias) {
-            return new UsersPath(alias, this);
-        }
-
-        @Override
-        public UsersPath as(Table<?> alias) {
-            return new UsersPath(alias.getQualifiedName(), this);
-        }
-    }
-
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
@@ -157,32 +125,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public UniqueKey<UsersRecord> getPrimaryKey() {
-        return Keys.USERS_PKEY;
-    }
-
-    private transient CommentsPath _comments;
-
-    /**
-     * Get the implicit to-many join path to the <code>public.comments</code>
-     * table
-     */
-    public CommentsPath comments() {
-        if (_comments == null)
-            _comments = new CommentsPath(this, null, Keys.COMMENTS__COMMENTS_USER_ID_FKEY.getInverseKey());
-
-        return _comments;
-    }
-
-    private transient PostsPath _posts;
-
-    /**
-     * Get the implicit to-many join path to the <code>public.posts</code> table
-     */
-    public PostsPath posts() {
-        if (_posts == null)
-            _posts = new PostsPath(this, null, Keys.POSTS__POSTS_USER_ID_FKEY.getInverseKey());
-
-        return _posts;
+        return Keys.PK_USERS;
     }
 
     @Override

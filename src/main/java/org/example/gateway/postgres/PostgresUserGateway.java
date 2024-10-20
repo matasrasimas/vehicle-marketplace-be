@@ -79,7 +79,7 @@ public class PostgresUserGateway implements UserGateway {
 
     private User buildUser(UsersRecord record) {
         return new User(
-                record.getId(),
+                UUID.fromString(record.getId().toString()),
                 record.getFirstName(),
                 record.getLastName(),
                 record.getPhoneNumber(),

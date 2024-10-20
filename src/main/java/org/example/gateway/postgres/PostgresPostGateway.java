@@ -85,9 +85,9 @@ public class PostgresPostGateway implements PostGateway {
 
     private Post buildPost(PostsRecord record) {
         return new Post(
-                record.getId(),
-                record.getCategoryId(),
-                record.getUserId(),
+                UUID.fromString(record.getId().toString()),
+                UUID.fromString(record.getCategoryId().toString()),
+                UUID.fromString(record.getUserId().toString()),
                 record.getDescription(),
                 record.getBrand(),
                 record.getModel(),

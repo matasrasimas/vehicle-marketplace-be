@@ -9,11 +9,10 @@ public class JOOQCodeGenerator {
 
         Dotenv dotenv = Dotenv.configure().load();
 
-        Database database = new Database()
-                .withName("org.jooq.meta.postgres.PostgresDatabase")
+        Database database = new Database() // Change from PostgresDatabase to SQLServerDatabase
                 .withIncludes(".*")
                 .withExcludes("")
-                .withInputSchema("public")
+                .withInputSchema("dbo") // Default schema in SQL Server is usually "dbo"
                 .withOutputSchemaToDefault(true);
 
         Target target = new Target()
@@ -22,8 +21,8 @@ public class JOOQCodeGenerator {
 
         Configuration configuration = new Configuration()
                 .withJdbc(new Jdbc()
-                        .withDriver("org.postgresql.Driver")
-                        .withUrl(dotenv.get("DATABASE_URL"))
+                        .withDriver("com.microsoft.sqlserver.jdbc.SQLServerDriver") // Update the driver
+                        .withUrl(dotenv.get("DATABASE_URL")) // Ensure your URL is SQL Server compatible
                         .withUser(dotenv.get("DATABASE_USERNAME"))
                         .withPassword(dotenv.get("DATABASE_PASSWORD")))
                 .withGenerator(new Generator()

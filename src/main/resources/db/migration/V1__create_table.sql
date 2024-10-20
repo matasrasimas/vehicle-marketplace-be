@@ -1,38 +1,38 @@
 CREATE TABLE categories (
-    id UUID PRIMARY KEY,
-    title TEXT NOT NULL
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    title NVARCHAR(MAX) NOT NULL
 );
 
 CREATE TABLE users (
-    id UUID PRIMARY KEY,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    phone_number TEXT NOT NULL,
-    username TEXT NOT NULL,
-    password_hash TEXT NOT NULL,
-    role TEXT NOT NULL
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    first_name NVARCHAR(MAX) NOT NULL,
+    last_name NVARCHAR(MAX) NOT NULL,
+    phone_number NVARCHAR(MAX) NOT NULL,
+    username NVARCHAR(MAX) NOT NULL,
+    password_hash NVARCHAR(MAX) NOT NULL,
+    role NVARCHAR(MAX) NOT NULL
 );
 
 CREATE TABLE posts (
-    id UUID PRIMARY KEY,
-    category_id UUID NOT NULL,
-    user_id UUID NOT NULL,
-    description TEXT,
-    brand TEXT NOT NULL,
-    model TEXT NOT NULL,
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    category_id UNIQUEIDENTIFIER NOT NULL,
+    user_id UNIQUEIDENTIFIER NOT NULL,
+    description NVARCHAR(MAX),
+    brand NVARCHAR(MAX) NOT NULL,
+    model NVARCHAR(MAX) NOT NULL,
     manufacture_year INTEGER NOT NULL,
-    mileage DOUBLE PRECISION,
-    price DOUBLE PRECISION NOT NULL,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+    mileage FLOAT, -- Use FLOAT instead of DOUBLE PRECISION
+    price FLOAT NOT NULL, -- Same as above
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 CREATE TABLE comments (
-    id UUID PRIMARY KEY,
-    post_id UUID NOT NULL,
-    user_id UUID NOT NULL,
-    content TEXT NOT NULL,
+    id UNIQUEIDENTIFIER PRIMARY KEY,
+    post_id UNIQUEIDENTIFIER NOT NULL,
+    user_id UNIQUEIDENTIFIER NOT NULL,
+    content NVARCHAR(MAX) NOT NULL,
     rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
-    FOREIGN KEY (post_id) REFERENCES posts(id) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );

@@ -4,8 +4,6 @@
 package org.example.generated.jooq.tables.records;
 
 
-import java.time.LocalDateTime;
-
 import org.example.generated.jooq.tables.FlywaySchemaHistory;
 import org.jooq.Record1;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -118,17 +116,29 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     }
 
     /**
-     * Setter for <code>flyway_schema_history.installed_on</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public void setInstalledOn(LocalDateTime value) {
+    @Deprecated
+    public void setInstalledOn(Object value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>flyway_schema_history.installed_on</code>.
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
      */
-    public LocalDateTime getInstalledOn() {
-        return (LocalDateTime) get(7);
+    @Deprecated
+    public Object getInstalledOn() {
+        return get(7);
     }
 
     /**
@@ -182,7 +192,7 @@ public class FlywaySchemaHistoryRecord extends UpdatableRecordImpl<FlywaySchemaH
     /**
      * Create a detached, initialised FlywaySchemaHistoryRecord
      */
-    public FlywaySchemaHistoryRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, LocalDateTime installedOn, Integer executionTime, Boolean success) {
+    public FlywaySchemaHistoryRecord(Integer installedRank, String version, String description, String type, String script, Integer checksum, String installedBy, Object installedOn, Integer executionTime, Boolean success) {
         super(FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY);
 
         setInstalledRank(installedRank);

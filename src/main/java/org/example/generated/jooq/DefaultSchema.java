@@ -10,14 +10,9 @@ import java.util.List;
 import org.example.generated.jooq.tables.Categories;
 import org.example.generated.jooq.tables.Comments;
 import org.example.generated.jooq.tables.FlywaySchemaHistory;
-import org.example.generated.jooq.tables.PgpArmorHeaders;
 import org.example.generated.jooq.tables.Posts;
 import org.example.generated.jooq.tables.Users;
-import org.example.generated.jooq.tables.records.PgpArmorHeadersRecord;
 import org.jooq.Catalog;
-import org.jooq.Configuration;
-import org.jooq.Field;
-import org.jooq.Result;
 import org.jooq.Table;
 import org.jooq.impl.SchemaImpl;
 
@@ -51,45 +46,6 @@ public class DefaultSchema extends SchemaImpl {
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
 
     /**
-     * The table <code>pgp_armor_headers</code>.
-     */
-    public final PgpArmorHeaders PGP_ARMOR_HEADERS = PgpArmorHeaders.PGP_ARMOR_HEADERS;
-
-    /**
-     * Call <code>pgp_armor_headers</code>.
-     */
-    public static Result<PgpArmorHeadersRecord> PGP_ARMOR_HEADERS(
-          Configuration configuration
-        , String __1
-    ) {
-        return configuration.dsl().selectFrom(org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-              __1
-        )).fetch();
-    }
-
-    /**
-     * Get <code>pgp_armor_headers</code> as a table.
-     */
-    public static PgpArmorHeaders PGP_ARMOR_HEADERS(
-          String __1
-    ) {
-        return org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-            __1
-        );
-    }
-
-    /**
-     * Get <code>pgp_armor_headers</code> as a table.
-     */
-    public static PgpArmorHeaders PGP_ARMOR_HEADERS(
-          Field<String> __1
-    ) {
-        return org.example.generated.jooq.tables.PgpArmorHeaders.PGP_ARMOR_HEADERS.call(
-            __1
-        );
-    }
-
-    /**
      * The table <code>posts</code>.
      */
     public final Posts POSTS = Posts.POSTS;
@@ -118,7 +74,6 @@ public class DefaultSchema extends SchemaImpl {
             Categories.CATEGORIES,
             Comments.COMMENTS,
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
-            PgpArmorHeaders.PGP_ARMOR_HEADERS,
             Posts.POSTS,
             Users.USERS
         );
