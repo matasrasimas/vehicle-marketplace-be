@@ -25,11 +25,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
+      - name: Verify WAR file exists
+        run: ls -l build/libs/
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/build/libs/*.war'
+          path: build/libs/*.war
 
   deploy:
     runs-on: ubuntu-latest
