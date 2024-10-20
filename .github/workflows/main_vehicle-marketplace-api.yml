@@ -28,11 +28,10 @@ jobs:
       - name: Verify WAR file exists
         run: ls -l build/libs/
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: java-app
-          path: build/libs/*.war
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,8 +43,8 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.8
         with:
          name: java-app
       
