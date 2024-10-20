@@ -1,4 +1,4 @@
-name: Build and deploy WAR app to Azure Web App - vehicle-marketplace-api
+name: Build and deploy JAR app to Azure Web App - vehicle-marketplace-api
 
 on:
   push:
@@ -25,14 +25,14 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Verify WAR file exists
+      - name: Verify JAR file exists
         run: ls -l build/libs/
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.4.3
         with:
           name: java-app
-          path: build/libs/*.war
+          path: build/libs/*.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -62,4 +62,4 @@ jobs:
         with:
           app-name: 'vehicle-marketplace-api'
           slot-name: 'Production'
-          package: build/libs/*.war
+          package: build/libs/*.jar
