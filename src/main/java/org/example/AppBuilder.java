@@ -111,7 +111,7 @@ public class AppBuilder {
         });
 
         app.exception(Exception.class, new JavalinExceptionHandler());
-        app.start(8080);
+        app.start(80);
         return app;
     }
 
