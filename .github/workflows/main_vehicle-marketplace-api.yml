@@ -1,0 +1,66 @@
+name: Build and deploy JAR app to Azure Web App - vehicle-marketplace-api
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Grant execute permission for Gradle wrapper
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - name: Verify JAR file exists
+        run: ls -l build/libs/
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: java-app
+          path:  build/libs/**/*.jar  # This pattern ensures all JAR files are included
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.8
+        with:
+         name: java-app
+         path: ./build/libs/
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C7ECFAF5FAB14C82AD76459B96FA7F86 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9DC5E692912349089F434BEC4152662D }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2F118CD4ECE3450AA75D22288FB90923 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'vehicle-marketplace-api'
+          slot-name: 'Production'
+          package: build/libs/*.jar
