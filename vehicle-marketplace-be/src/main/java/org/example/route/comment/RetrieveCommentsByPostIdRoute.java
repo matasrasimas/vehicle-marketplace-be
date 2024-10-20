@@ -3,7 +3,7 @@ package org.example.route.comment;
 import io.javalin.http.Context;
 import org.example.usecase.api.comment.RetrieveCommentsByPostIdUseCase;
 
-import static org.example.common.RouteConstants.POST_ID_PATH;
+import static org.example.common.RouteConstants.POST_ID;
 
 public class RetrieveCommentsByPostIdRoute {
     private final RetrieveCommentsByPostIdUseCase useCase;
@@ -13,7 +13,7 @@ public class RetrieveCommentsByPostIdRoute {
     }
 
     public void execute(Context context) {
-        String postId = context.pathParam(POST_ID_PATH);
+        String postId = context.pathParam(POST_ID);
         context.json(useCase.retrieve(postId));
     }
 }

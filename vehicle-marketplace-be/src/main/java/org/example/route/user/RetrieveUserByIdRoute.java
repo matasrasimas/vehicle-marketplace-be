@@ -1,10 +1,11 @@
 package org.example.route.user;
 
 import io.javalin.http.Context;
+import org.example.common.JwtParser;
 import org.example.exception.ItemNotFoundException;
 import org.example.usecase.api.user.RetrieveUserByIdUseCase;
 
-import static org.example.common.RouteConstants.USER_ID_PATH;
+import static org.example.common.RouteConstants.USER_ID;
 
 public class RetrieveUserByIdRoute {
     private final RetrieveUserByIdUseCase useCase;
@@ -14,8 +15,9 @@ public class RetrieveUserByIdRoute {
     }
 
     public void execute(Context context) {
-        String userId = context.pathParam(USER_ID_PATH);
-        useCase.retrieve(userId).ifPresentOrElse(
+        String token = JwtParser.parse(context);
+        String userId = context.pathParam(USER_ID);
+        useCase.retrieve(userId, token).ifPresentOrElse(
                 context::json,
                 () -> {
                     throw new ItemNotFoundException(

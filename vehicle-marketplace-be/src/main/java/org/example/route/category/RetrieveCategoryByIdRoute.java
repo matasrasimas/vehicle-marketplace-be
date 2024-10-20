@@ -4,7 +4,7 @@ import io.javalin.http.Context;
 import org.example.exception.ItemNotFoundException;
 import org.example.usecase.api.category.RetrieveCategoryByIdUseCase;
 
-import static org.example.common.RouteConstants.CATEGORY_ID_PATH;
+import static org.example.common.RouteConstants.CATEGORY_ID;
 
 public class RetrieveCategoryByIdRoute {
     private final RetrieveCategoryByIdUseCase useCase;
@@ -14,7 +14,7 @@ public class RetrieveCategoryByIdRoute {
     }
 
     public void execute(Context context) {
-        String categoryId = context.pathParam(CATEGORY_ID_PATH);
+        String categoryId = context.pathParam(CATEGORY_ID);
         useCase.retrieve(categoryId)
                 .ifPresentOrElse(
                         context::json,

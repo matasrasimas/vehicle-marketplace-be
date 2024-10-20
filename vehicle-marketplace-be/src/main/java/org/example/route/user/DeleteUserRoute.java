@@ -1,9 +1,10 @@
 package org.example.route.user;
 
 import io.javalin.http.Context;
+import org.example.common.JwtParser;
 import org.example.usecase.api.user.DeleteUserUseCase;
 
-import static org.example.common.RouteConstants.USER_ID_PATH;
+import static org.example.common.RouteConstants.USER_ID;
 
 
 public class DeleteUserRoute {
@@ -14,8 +15,9 @@ public class DeleteUserRoute {
     }
 
     public void execute(Context context) {
-        String userId = context.pathParam(USER_ID_PATH);
-        useCase.delete(userId);
+        String token = JwtParser.parse(context);
+        String userId = context.pathParam(USER_ID);
+        useCase.delete(userId, token);
         context.status(204);
     }
 }

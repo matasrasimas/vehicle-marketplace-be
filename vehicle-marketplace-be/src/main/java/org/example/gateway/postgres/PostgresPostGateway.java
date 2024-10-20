@@ -1,9 +1,9 @@
 package org.example.gateway.postgres;
 
-import org.example.common.UpsertStatus;
 import org.example.gateway.api.PostGateway;
 import org.example.generated.jooq.tables.records.PostsRecord;
 import org.example.model.domain.Post;
+import org.example.model.domain.UpsertPost;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -47,21 +47,11 @@ public class PostgresPostGateway implements PostGateway {
     }
 
     @Override
-    public UpsertStatus upsert(Post input) {
-        int rowsAffected =
-                dsl.insertInto(POSTS)
-                .set(POSTS.ID, input.getId())
+    public void create(UpsertPost input, String userId) {
+        dsl.insertInto(POSTS)
+                .set(POSTS.ID, UUID.randomUUID())
                 .set(POSTS.CATEGORY_ID, input.getCategoryId())
-                .set(POSTS.USER_ID, input.getUserId())
-                .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
-                .set(POSTS.BRAND, input.getBrand())
-                .set(POSTS.MODEL, input.getModel())
-                .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
-                .set(POSTS.MILEAGE, input.getMileage().orElse(null))
-                .set(POSTS.PRICE, input.getPrice())
-                .onDuplicateKeyUpdate()
-                .set(POSTS.CATEGORY_ID, input.getCategoryId())
-                .set(POSTS.USER_ID, input.getUserId())
+                .set(POSTS.USER_ID, UUID.fromString(userId))
                 .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
                 .set(POSTS.BRAND, input.getBrand())
                 .set(POSTS.MODEL, input.getModel())
@@ -69,10 +59,21 @@ public class PostgresPostGateway implements PostGateway {
                 .set(POSTS.MILEAGE, input.getMileage().orElse(null))
                 .set(POSTS.PRICE, input.getPrice())
                 .execute();
+    }
 
-        if(rowsAffected == 1)
-            return UpsertStatus.RESOURCE_CREATED;
-        return UpsertStatus.RESOURCE_UPDATED;
+    @Override
+    public void update(UpsertPost input, String postId, String userId) {
+        dsl.update(POSTS)
+                .set(POSTS.CATEGORY_ID, input.getCategoryId())
+                .set(POSTS.USER_ID, UUID.fromString(userId))
+                .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
+                .set(POSTS.BRAND, input.getBrand())
+                .set(POSTS.MODEL, input.getModel())
+                .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
+                .set(POSTS.MILEAGE, input.getMileage().orElse(null))
+                .set(POSTS.PRICE, input.getPrice())
+                .where(POSTS.ID.eq(UUID.fromString(postId)))
+                .execute();
     }
 
     @Override

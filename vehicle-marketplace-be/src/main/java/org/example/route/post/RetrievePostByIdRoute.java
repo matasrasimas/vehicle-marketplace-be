@@ -4,7 +4,7 @@ import io.javalin.http.Context;
 import org.example.exception.ItemNotFoundException;
 import org.example.usecase.api.post.RetrievePostByIdUseCase;
 
-import static org.example.common.RouteConstants.POST_ID_PATH;
+import static org.example.common.RouteConstants.POST_ID;
 
 public class RetrievePostByIdRoute {
     private final RetrievePostByIdUseCase useCase;
@@ -14,7 +14,7 @@ public class RetrievePostByIdRoute {
     }
 
     public void execute(Context context) {
-        String postId = context.pathParam(POST_ID_PATH);
+        String postId = context.pathParam(POST_ID);
         useCase.retrieve(postId).ifPresentOrElse(
                 context::json,
                 () -> {

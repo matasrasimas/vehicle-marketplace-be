@@ -3,7 +3,7 @@ package org.example.route.post;
 import io.javalin.http.Context;
 import org.example.usecase.api.post.RetrievePostsByCategoryIdUseCase;
 
-import static org.example.common.RouteConstants.CATEGORY_ID_PATH;
+import static org.example.common.RouteConstants.CATEGORY_ID;
 
 public class RetrievePostsByCategoryIdRoute {
     private final RetrievePostsByCategoryIdUseCase useCase;
@@ -13,7 +13,7 @@ public class RetrievePostsByCategoryIdRoute {
     }
 
     public void execute(Context context) {
-        String categoryId = context.pathParam(CATEGORY_ID_PATH);
+        String categoryId = context.pathParam(CATEGORY_ID);
         context.json(useCase.retrieve(categoryId));
     }
 }

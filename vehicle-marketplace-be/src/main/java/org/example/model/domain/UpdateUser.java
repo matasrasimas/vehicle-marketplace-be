@@ -1,9 +1,6 @@
 package org.example.model.domain;
 
-import java.util.UUID;
-
-public record UpdateUser(UUID id,
-                         String firstName,
+public record UpdateUser(String firstName,
                          String lastName,
                          String phoneNumber,
                          String username,

@@ -1,11 +1,13 @@
 package org.example;
 
 import io.javalin.Javalin;
+import io.javalin.http.HandlerType;
 import org.example.exception.JavalinExceptionHandler;
-import org.example.route.category.DeleteCategoryRoute;
-import org.example.route.category.RetrieveCategoriesRoute;
-import org.example.route.category.RetrieveCategoryByIdRoute;
-import org.example.route.category.UpsertCategoryRoute;
+import org.example.route.auth.AuthenticateForAdminRoute;
+import org.example.route.auth.AuthenticateForUserRoute;
+import org.example.route.auth.LoginRoute;
+import org.example.route.auth.ReauthenticateRoute;
+import org.example.route.category.*;
 import org.example.route.comment.*;
 import org.example.route.post.*;
 import org.example.route.user.*;
@@ -16,65 +18,86 @@ import static org.example.common.RouteConstants.*;
 public class AppBuilder {
     private final RetrieveCategoriesRoute retrieveCategoriesRoute;
     private final RetrieveCategoryByIdRoute retrieveCategoryByIdRoute;
-    private final UpsertCategoryRoute upsertCategoryRoute;
+    private final CreateCategoryRoute createCategoryRoute;
+    private final UpdateCategoryRoute updateCategoryRoute;
     private final DeleteCategoryRoute deleteCategoryRoute;
     private final RetrievePostsRoute retrievePostsRoute;
     private final RetrievePostByIdRoute retrievePostByIdRoute;
     private final RetrievePostsByCategoryIdRoute retrievePostsByCategoryIdRoute;
     private final RetrievePostsByUserIdRoute retrievePostsByUserIdRoute;
-    private final UpsertPostRoute upsertPostRoute;
+    private final CreatePostRoute createPostRoute;
+    private final UpdatePostRoute updatePostRoute;
     private final DeletePostRoute deletePostRoute;
     private final RetrieveCommentsRoute retrieveCommentsRoute;
     private final RetrieveCommentByIdRoute retrieveCommentByIdRoute;
     private final RetrieveCommentsByPostIdRoute retrieveCommentsByPostIdRoute;
-    private final UpsertCommentRoute upsertCommentRoute;
+    private final CreateCommentRoute createCommentRoute;
+    private final UpdateCommentRoute updateCommentRoute;
     private final DeleteCommentRoute deleteCommentRoute;
     private final RetrieveUsersRoute retrieveUsersRoute;
     private final RetrieveUserByIdRoute retrieveUserByIdRoute;
     private final CreateUserRoute createUserRoute;
     private final UpdateUserRoute updateUserRoute;
     private final DeleteUserRoute deleteUserRoute;
+    private final LoginRoute loginRoute;
+    private final AuthenticateForAdminRoute authenticateForAdminRoute;
+    private final AuthenticateForUserRoute authenticateForUserRoute;
+    private final ReauthenticateRoute reauthenticateRoute;
 
     public AppBuilder(RetrieveCategoriesRoute retrieveCategoriesRoute,
                       RetrieveCategoryByIdRoute retrieveCategoryByIdRoute,
-                      UpsertCategoryRoute upsertCategoryRoute,
+                      CreateCategoryRoute createCategoryRoute,
+                      UpdateCategoryRoute updateCategoryRoute,
                       DeleteCategoryRoute deleteCategoryRoute,
                       RetrievePostsRoute retrievePostsRoute,
                       RetrievePostByIdRoute retrievePostByIdRoute,
                       RetrievePostsByCategoryIdRoute retrievePostsByCategoryIdRoute,
                       RetrievePostsByUserIdRoute retrievePostsByUserIdRoute,
-                      UpsertPostRoute upsertPostRoute,
+                      CreatePostRoute createPostRoute,
+                      UpdatePostRoute updatePostRoute,
                       DeletePostRoute deletePostRoute,
                       RetrieveCommentsRoute retrieveCommentsRoute,
                       RetrieveCommentByIdRoute retrieveCommentByIdRoute,
                       RetrieveCommentsByPostIdRoute retrieveCommentsByPostIdRoute,
-                      UpsertCommentRoute upsertCommentRoute,
+                      CreateCommentRoute createCommentRoute,
+                      UpdateCommentRoute updateCommentRoute,
                       DeleteCommentRoute deleteCommentRoute,
                       RetrieveUsersRoute retrieveUsersRoute,
                       RetrieveUserByIdRoute retrieveUserByIdRoute,
                       CreateUserRoute createUserRoute,
                       UpdateUserRoute updateUserRoute,
-                      DeleteUserRoute deleteUserRoute) {
+                      DeleteUserRoute deleteUserRoute,
+                      LoginRoute loginRoute,
+                      AuthenticateForAdminRoute authenticateForAdminRoute,
+                      AuthenticateForUserRoute authenticateForUserRoute,
+                      ReauthenticateRoute reauthenticateRoute) {
         this.retrieveCategoriesRoute = retrieveCategoriesRoute;
         this.retrieveCategoryByIdRoute = retrieveCategoryByIdRoute;
-        this.upsertCategoryRoute = upsertCategoryRoute;
+        this.createCategoryRoute = createCategoryRoute;
+        this.updateCategoryRoute = updateCategoryRoute;
         this.deleteCategoryRoute = deleteCategoryRoute;
         this.retrievePostsRoute = retrievePostsRoute;
         this.retrievePostByIdRoute = retrievePostByIdRoute;
         this.retrievePostsByCategoryIdRoute = retrievePostsByCategoryIdRoute;
         this.retrievePostsByUserIdRoute = retrievePostsByUserIdRoute;
-        this.upsertPostRoute = upsertPostRoute;
+        this.createPostRoute = createPostRoute;
+        this.updatePostRoute = updatePostRoute;
         this.deletePostRoute = deletePostRoute;
         this.retrieveCommentsRoute = retrieveCommentsRoute;
         this.retrieveCommentByIdRoute = retrieveCommentByIdRoute;
         this.retrieveCommentsByPostIdRoute = retrieveCommentsByPostIdRoute;
-        this.upsertCommentRoute = upsertCommentRoute;
+        this.createCommentRoute = createCommentRoute;
+        this.updateCommentRoute = updateCommentRoute;
         this.deleteCommentRoute = deleteCommentRoute;
         this.retrieveUsersRoute = retrieveUsersRoute;
         this.retrieveUserByIdRoute = retrieveUserByIdRoute;
         this.createUserRoute = createUserRoute;
         this.updateUserRoute = updateUserRoute;
         this.deleteUserRoute = deleteUserRoute;
+        this.loginRoute = loginRoute;
+        this.authenticateForAdminRoute = authenticateForAdminRoute;
+        this.authenticateForUserRoute = authenticateForUserRoute;
+        this.reauthenticateRoute = reauthenticateRoute;
     }
 
     public Javalin build() {
@@ -97,49 +120,90 @@ public class AppBuilder {
         path(POSTS_PATH, this::createPostsRoutes);
         path(COMMENTS_PATH, this::createCommentsRoutes);
         path(USERS_PATH, this::createUsersRoutes);
+        post(LOGIN_PATH, loginRoute::execute);
+        post(REAUTH_PATH, reauthenticateRoute::execute);
     }
 
     private void createCategoriesRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.POST))
+                authenticateForAdminRoute.execute(ctx);
+        });
         get(EMPTY, retrieveCategoriesRoute::execute);
         path(CATEGORY_ID_PATH_PARAM, this::createCategoryIdRoutes);
-        post(EMPTY, upsertCategoryRoute::execute);
+        post(EMPTY, createCategoryRoute::execute);
     }
 
     private void createCategoryIdRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.PUT) || ctx.method().equals(HandlerType.DELETE))
+                authenticateForAdminRoute.execute(ctx);
+        });
         get(EMPTY, retrieveCategoryByIdRoute::execute);
         get(POSTS_PATH, retrievePostsByCategoryIdRoute::execute);
+        put(EMPTY, updateCategoryRoute::execute);
         delete(EMPTY, deleteCategoryRoute::execute);
     }
 
     private void createPostsRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.POST))
+                authenticateForUserRoute.execute(ctx);
+        });
         get(EMPTY, retrievePostsRoute::execute);
         path(POST_ID_PATH_PARAM, this::createPostIdRoutes);
-        post(EMPTY, upsertPostRoute::execute);
+        post(EMPTY, createPostRoute::execute);
     }
 
     private void createPostIdRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.PUT) || ctx.method().equals(HandlerType.DELETE))
+                authenticateForUserRoute.execute(ctx);
+        });
         get(EMPTY, retrievePostByIdRoute::execute);
         get(COMMENTS_PATH, retrieveCommentsByPostIdRoute::execute);
+        put(EMPTY, updatePostRoute::execute);
         delete(EMPTY, deletePostRoute::execute);
     }
 
     private void createCommentsRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.POST))
+                authenticateForUserRoute.execute(ctx);
+        });
         get(EMPTY, retrieveCommentsRoute::execute);
-        get(COMMENT_ID_PATH_PARAM, retrieveCommentByIdRoute::execute);
-        post(EMPTY, upsertCommentRoute::execute);
-        delete(COMMENT_ID_PATH_PARAM, deleteCommentRoute::execute);
+        post(EMPTY, createCommentRoute::execute);
+        path(COMMENT_ID_PATH_PARAM, this::createCommentIdRoutes);
+    }
+
+    private void createCommentIdRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.PUT) || ctx.method().equals(HandlerType.DELETE))
+                authenticateForUserRoute.execute(ctx);
+        });
+        get(EMPTY, retrieveCommentByIdRoute::execute);
+        put(EMPTY, updateCommentRoute::execute);
+        delete(EMPTY, deleteCommentRoute::execute);
     }
 
     private void createUsersRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.GET))
+                authenticateForAdminRoute.execute(ctx);
+        });
         get(EMPTY, retrieveUsersRoute::execute);
         path(USER_ID_PATH_PARAM, this::createUserIdRoutes);
         post(EMPTY, createUserRoute::execute);
-        put(EMPTY, updateUserRoute::execute);
     }
 
     private void createUserIdRoutes() {
+        before(EMPTY, ctx -> {
+            if (ctx.method().equals(HandlerType.GET) || ctx.method().equals(HandlerType.PUT) || ctx.method().equals(HandlerType.DELETE))
+                authenticateForUserRoute.execute(ctx);
+        });
         get(EMPTY, retrieveUserByIdRoute::execute);
         get(POSTS_PATH, retrievePostsByUserIdRoute::execute);
+        put(EMPTY, updateUserRoute::execute);
         delete(EMPTY, deleteUserRoute::execute);
     }
 }

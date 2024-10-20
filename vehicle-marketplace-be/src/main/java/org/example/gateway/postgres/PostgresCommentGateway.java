@@ -1,9 +1,9 @@
 package org.example.gateway.postgres;
 
-import org.example.common.UpsertStatus;
 import org.example.gateway.api.CommentGateway;
 import org.example.generated.jooq.tables.records.CommentsRecord;
 import org.example.model.domain.Comment;
+import org.example.model.domain.UpsertComment;
 import org.jooq.DSLContext;
 
 import java.util.List;
@@ -40,25 +40,25 @@ public class PostgresCommentGateway implements CommentGateway {
     }
 
     @Override
-    public UpsertStatus upsert(Comment input) {
-        int rowsAffected =
-                dsl.insertInto(COMMENTS)
-                .set(COMMENTS.ID, input.id())
+    public void create(UpsertComment input, String userId) {
+        dsl.insertInto(COMMENTS)
+                .set(COMMENTS.ID, UUID.randomUUID())
                 .set(COMMENTS.POST_ID, input.postId())
-                .set(COMMENTS.USER_ID, input.userId())
-                .set(COMMENTS.CONTENT, input.content())
-                .set(COMMENTS.RATING, input.rating())
-                .onDuplicateKeyUpdate()
-                .set(COMMENTS.POST_ID, input.postId())
-                .set(COMMENTS.USER_ID, input.userId())
+                .set(COMMENTS.USER_ID, UUID.fromString(userId))
                 .set(COMMENTS.CONTENT, input.content())
                 .set(COMMENTS.RATING, input.rating())
                 .execute();
+    }
 
-        if(rowsAffected == 1)
-            return UpsertStatus.RESOURCE_CREATED;
-        return UpsertStatus.RESOURCE_UPDATED;
-
+    @Override
+    public void update(UpsertComment input, String commentId, String userId) {
+        dsl.update(COMMENTS)
+                .set(COMMENTS.POST_ID, input.postId())
+                .set(COMMENTS.USER_ID, UUID.fromString(userId))
+                .set(COMMENTS.CONTENT, input.content())
+                .set(COMMENTS.RATING, input.rating())
+                .where(COMMENTS.ID.eq(UUID.fromString(commentId)))
+                .execute();
     }
 
     @Override

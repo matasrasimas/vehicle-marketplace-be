@@ -2,10 +2,7 @@ package org.example.gateway.postgres;
 
 import org.example.gateway.api.UserGateway;
 import org.example.generated.jooq.tables.records.UsersRecord;
-import org.example.model.domain.CreateUser;
-import org.example.model.domain.Role;
-import org.example.model.domain.UpdateUser;
-import org.example.model.domain.User;
+import org.example.model.domain.*;
 import org.jooq.DSLContext;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -49,14 +46,14 @@ public class PostgresUserGateway implements UserGateway {
     }
 
     @Override
-    public void update(UpdateUser input) {
+    public void update(String userId, UpdateUser input) {
         dsl.update(USERS)
                 .set(USERS.FIRST_NAME, input.firstName())
                 .set(USERS.LAST_NAME, input.lastName())
                 .set(USERS.PHONE_NUMBER, input.phoneNumber())
                 .set(USERS.USERNAME, input.username())
                 .set(USERS.ROLE, input.role().toString())
-                .where(USERS.ID.eq(input.id()))
+                .where(USERS.ID.eq(UUID.fromString(userId)))
                 .execute();
     }
 
@@ -65,6 +62,19 @@ public class PostgresUserGateway implements UserGateway {
         dsl.deleteFrom(USERS)
                 .where(USERS.ID.eq(UUID.fromString(userId)))
                 .execute();
+    }
+
+    @Override
+    public Optional<User> login(UserLogin input) {
+        Optional<UsersRecord> userByUsername = dsl.selectFrom(USERS)
+                .where(USERS.USERNAME.eq(input.username()))
+                .fetchOptional();
+
+        return userByUsername.flatMap(user -> {
+            if (BCrypt.checkpw(input.password(), user.getPasswordHash()))
+                return Optional.of(this.buildUser(user));
+            return Optional.empty();
+        });
     }
 
     private User buildUser(UsersRecord record) {

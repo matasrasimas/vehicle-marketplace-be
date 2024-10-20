@@ -4,7 +4,7 @@ import io.javalin.http.Context;
 import org.example.exception.ItemNotFoundException;
 import org.example.usecase.api.comment.RetrieveCommentByIdUseCase;
 
-import static org.example.common.RouteConstants.COMMENT_ID_PATH;
+import static org.example.common.RouteConstants.COMMENT_ID;
 
 public class RetrieveCommentByIdRoute {
     private final RetrieveCommentByIdUseCase useCase;
@@ -14,7 +14,7 @@ public class RetrieveCommentByIdRoute {
     }
 
     public void execute(Context context) {
-        String commentId = context.pathParam(COMMENT_ID_PATH);
+        String commentId = context.pathParam(COMMENT_ID);
         useCase.retrieve(commentId).ifPresentOrElse(
                 context::json,
                 () -> {

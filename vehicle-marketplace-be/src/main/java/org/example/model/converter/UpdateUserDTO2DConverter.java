@@ -4,12 +4,9 @@ import org.example.model.domain.Role;
 import org.example.model.domain.UpdateUser;
 import org.example.model.dto.UpdateUserDTO;
 
-import java.util.UUID;
-
 public class UpdateUserDTO2DConverter {
     public UpdateUser convert(UpdateUserDTO input) {
         return new UpdateUser(
-                UUID.fromString(input.id()),
                 input.firstName(),
                 input.lastName(),
                 input.phoneNumber(),

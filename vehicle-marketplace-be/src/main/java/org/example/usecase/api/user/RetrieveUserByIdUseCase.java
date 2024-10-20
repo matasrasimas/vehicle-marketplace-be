@@ -5,5 +5,5 @@ import org.example.model.dto.UserDTO;
 import java.util.Optional;
 
 public interface RetrieveUserByIdUseCase {
-    Optional<UserDTO> retrieve(String userId);
+    Optional<UserDTO> retrieve(String userId, String token);
 }

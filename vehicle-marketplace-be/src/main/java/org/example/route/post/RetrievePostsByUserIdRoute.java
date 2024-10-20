@@ -3,7 +3,7 @@ package org.example.route.post;
 import io.javalin.http.Context;
 import org.example.usecase.api.post.RetrievePostsByUserIdUseCase;
 
-import static org.example.common.RouteConstants.USER_ID_PATH;
+import static org.example.common.RouteConstants.USER_ID;
 
 public class RetrievePostsByUserIdRoute {
     private final RetrievePostsByUserIdUseCase useCase;
@@ -13,7 +13,7 @@ public class RetrievePostsByUserIdRoute {
     }
 
     public void execute(Context context) {
-        String userId = context.pathParam(USER_ID_PATH);
+        String userId = context.pathParam(USER_ID);
         context.json(useCase.retrieve(userId));
     }
 }

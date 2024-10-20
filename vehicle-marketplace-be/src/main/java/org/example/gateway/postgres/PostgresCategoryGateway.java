@@ -1,8 +1,8 @@
 package org.example.gateway.postgres;
 
-import org.example.common.UpsertStatus;
 import org.example.gateway.api.CategoryGateway;
 import org.example.model.domain.Category;
+import org.example.model.domain.UpsertCategory;
 import org.jooq.DSLContext;
 
 import static org.example.generated.jooq.tables.Categories.CATEGORIES;
@@ -38,18 +38,19 @@ public class PostgresCategoryGateway implements CategoryGateway {
     }
 
     @Override
-    public UpsertStatus upsert(Category input) {
-        int rowsAffected =
-                dsl.insertInto(CATEGORIES)
-                .set(CATEGORIES.ID, input.id())
-                .set(CATEGORIES.TITLE, input.title())
-                .onDuplicateKeyUpdate()
+    public void create(UpsertCategory input) {
+        dsl.insertInto(CATEGORIES)
+                .set(CATEGORIES.ID, UUID.randomUUID())
                 .set(CATEGORIES.TITLE, input.title())
                 .execute();
+    }
 
-        if(rowsAffected == 1)
-            return UpsertStatus.RESOURCE_CREATED;
-        return UpsertStatus.RESOURCE_UPDATED;
+    @Override
+    public void update(String categoryId, UpsertCategory input) {
+        dsl.update(CATEGORIES)
+                .set(CATEGORIES.TITLE, input.title())
+                .where(CATEGORIES.ID.eq(UUID.fromString(categoryId)))
+                .execute();
     }
 
     @Override
