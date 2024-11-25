@@ -1,9 +1,7 @@
 package org.example.db.migration;
 
-import org.example.DbConfigProvider;
 import org.flywaydb.core.api.migration.BaseJavaMigration;
 import org.flywaydb.core.api.migration.Context;
-import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -17,7 +15,7 @@ public class V3__hash_user_passwords extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
         Connection connection = context.getConnection();
-        DSLContext dsl = DSL.using(connection, SQLDialect.POSTGRES);
+        DSLContext dsl = DSL.using(connection, SQLDialect.DEFAULT);
 
         String password1 = BCrypt.hashpw("password123", BCrypt.gensalt());
         String password2 = BCrypt.hashpw("janepassword", BCrypt.gensalt());

@@ -5,11 +5,15 @@ import org.example.generated.jooq.tables.records.PostsRecord;
 import org.example.model.domain.Post;
 import org.example.model.domain.UpsertPost;
 import org.jooq.DSLContext;
+import org.jooq.Query;
+import org.jooq.impl.DSL;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+import static org.example.generated.jooq.tables.Comments.COMMENTS;
 import static org.example.generated.jooq.tables.Posts.POSTS;
 
 public class PostgresPostGateway implements PostGateway {
@@ -58,28 +62,55 @@ public class PostgresPostGateway implements PostGateway {
                 .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
                 .set(POSTS.MILEAGE, input.getMileage().orElse(null))
                 .set(POSTS.PRICE, input.getPrice())
+                .set(POSTS.IMAGE, input.getImage())
                 .execute();
     }
 
     @Override
     public void update(UpsertPost input, String postId, String userId) {
-        dsl.update(POSTS)
-                .set(POSTS.CATEGORY_ID, input.getCategoryId())
-                .set(POSTS.USER_ID, UUID.fromString(userId))
-                .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
-                .set(POSTS.BRAND, input.getBrand())
-                .set(POSTS.MODEL, input.getModel())
-                .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
-                .set(POSTS.MILEAGE, input.getMileage().orElse(null))
-                .set(POSTS.PRICE, input.getPrice())
-                .where(POSTS.ID.eq(UUID.fromString(postId)))
-                .execute();
+        Query updateQuery =
+                isNull(input.getImage())
+                        ? dsl.update(POSTS)
+                        .set(POSTS.CATEGORY_ID, input.getCategoryId())
+                        .set(POSTS.USER_ID, UUID.fromString(userId))
+                        .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
+                        .set(POSTS.BRAND, input.getBrand())
+                        .set(POSTS.MODEL, input.getModel())
+                        .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
+                        .set(POSTS.MILEAGE, input.getMileage().orElse(null))
+                        .set(POSTS.PRICE, input.getPrice())
+                        .where(POSTS.ID.eq(UUID.fromString(postId)))
+                        : dsl.update(POSTS)
+                        .set(POSTS.CATEGORY_ID, input.getCategoryId())
+                        .set(POSTS.USER_ID, UUID.fromString(userId))
+                        .set(POSTS.DESCRIPTION, input.getDescription().orElse(null))
+                        .set(POSTS.BRAND, input.getBrand())
+                        .set(POSTS.MODEL, input.getModel())
+                        .set(POSTS.MANUFACTURE_YEAR, input.getManufactureYear())
+                        .set(POSTS.MILEAGE, input.getMileage().orElse(null))
+                        .set(POSTS.PRICE, input.getPrice())
+                        .set(POSTS.IMAGE, input.getImage())
+                        .where(POSTS.ID.eq(UUID.fromString(postId)));
+
+        updateQuery.execute();
     }
 
     @Override
     public void delete(String postId) {
-        dsl.deleteFrom(POSTS)
-                .where(POSTS.ID.eq(UUID.fromString(postId)))
+        dsl.transaction(configuration -> {
+            DSLContext transactionalDsl = DSL.using(configuration);
+
+            deletePostComments(postId, transactionalDsl);
+
+            dsl.deleteFrom(POSTS)
+                    .where(POSTS.ID.eq(UUID.fromString(postId)))
+                    .execute();
+        });
+    }
+
+    private void deletePostComments(String postId, DSLContext dsl) {
+        dsl.deleteFrom(COMMENTS)
+                .where(COMMENTS.POST_ID.eq(UUID.fromString(postId)))
                 .execute();
     }
 
@@ -93,7 +124,8 @@ public class PostgresPostGateway implements PostGateway {
                 record.getModel(),
                 record.getManufactureYear(),
                 record.getMileage(),
-                record.getPrice()
+                record.getPrice(),
+                record.getImage()
         );
     }
 }

@@ -5,6 +5,7 @@ import org.example.model.converter.CommentD2DTOConverter;
 import org.example.model.dto.CommentDTO;
 import org.example.usecase.api.comment.RetrieveCommentsUseCase;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 

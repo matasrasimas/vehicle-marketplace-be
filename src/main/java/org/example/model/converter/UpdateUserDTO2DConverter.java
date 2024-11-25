@@ -1,6 +1,5 @@
 package org.example.model.converter;
 
-import org.example.model.domain.Role;
 import org.example.model.domain.UpdateUser;
 import org.example.model.dto.UpdateUserDTO;
 
@@ -10,8 +9,7 @@ public class UpdateUserDTO2DConverter {
                 input.firstName(),
                 input.lastName(),
                 input.phoneNumber(),
-                input.username(),
-                Role.valueOf(input.role())
+                input.username()
         );
     }
 }

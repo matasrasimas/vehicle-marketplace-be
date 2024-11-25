@@ -57,6 +57,20 @@ public class CategoriesRecord extends UpdatableRecordImpl<CategoriesRecord> {
         return (String) get(1);
     }
 
+    /**
+     * Setter for <code>categories.image</code>.
+     */
+    public void setImage(byte[] value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for <code>categories.image</code>.
+     */
+    public byte[] getImage() {
+        return (byte[]) get(2);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -80,11 +94,12 @@ public class CategoriesRecord extends UpdatableRecordImpl<CategoriesRecord> {
     /**
      * Create a detached, initialised CategoriesRecord
      */
-    public CategoriesRecord(Object id, String title) {
+    public CategoriesRecord(Object id, String title, byte[] image) {
         super(Categories.CATEGORIES);
 
         setId(id);
         setTitle(title);
+        setImage(image);
         resetChangedOnNotNull();
     }
 }

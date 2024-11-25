@@ -6,6 +6,7 @@ import org.example.model.domain.Comment;
 import org.example.model.domain.UpsertComment;
 import org.jooq.DSLContext;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,6 +48,7 @@ public class PostgresCommentGateway implements CommentGateway {
                 .set(COMMENTS.USER_ID, UUID.fromString(userId))
                 .set(COMMENTS.CONTENT, input.content())
                 .set(COMMENTS.RATING, input.rating())
+                .set(COMMENTS.CREATED_AT, LocalDateTime.now())
                 .execute();
     }
 
@@ -74,7 +76,8 @@ public class PostgresCommentGateway implements CommentGateway {
                 UUID.fromString(record.getPostId().toString()),
                 UUID.fromString(record.getUserId().toString()),
                 record.getContent(),
-                record.getRating()
+                record.getRating(),
+                record.getCreatedAt().toString()
         );
     }
 }

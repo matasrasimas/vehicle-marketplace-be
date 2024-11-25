@@ -179,6 +179,20 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
         return (Double) get(8);
     }
 
+    /**
+     * Setter for <code>posts.image</code>.
+     */
+    public void setImage(byte[] value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>posts.image</code>.
+     */
+    public byte[] getImage() {
+        return (byte[]) get(9);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -202,7 +216,7 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
     /**
      * Create a detached, initialised PostsRecord
      */
-    public PostsRecord(Object id, Object categoryId, Object userId, String description, String brand, String model, Integer manufactureYear, Double mileage, Double price) {
+    public PostsRecord(Object id, Object categoryId, Object userId, String description, String brand, String model, Integer manufactureYear, Double mileage, Double price, byte[] image) {
         super(Posts.POSTS);
 
         setId(id);
@@ -214,6 +228,7 @@ public class PostsRecord extends UpdatableRecordImpl<PostsRecord> {
         setManufactureYear(manufactureYear);
         setMileage(mileage);
         setPrice(price);
+        setImage(image);
         resetChangedOnNotNull();
     }
 }

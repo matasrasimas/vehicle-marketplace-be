@@ -91,6 +91,17 @@ public class Comments extends TableImpl<CommentsRecord> {
      */
     public final TableField<CommentsRecord, Integer> RATING = createField(DSL.name("rating"), SQLDataType.INTEGER.nullable(false), this, "");
 
+    /**
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
+     */
+    @Deprecated
+    public final TableField<CommentsRecord, Object> CREATED_AT = createField(DSL.name("created_at"), org.jooq.impl.SQLDataType.OTHER.nullable(false).defaultValue(DSL.field(DSL.raw("'(getdate())'"), org.jooq.impl.SQLDataType.OTHER)), this, "");
+
     private Comments(Name alias, Table<CommentsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

@@ -8,5 +8,6 @@ public record UpsertPostDTO(@JsonProperty(required = true, value = "categoryId")
                             @JsonProperty(required = true, value = "model") String model,
                             @JsonProperty(required = true, value = "manufactureYear") int manufactureYear,
                             @JsonProperty("mileage") Double mileage,
-                            @JsonProperty(required = true, value = "price") Double price) {
+                            @JsonProperty(required = true, value = "price") Double price,
+                            @JsonProperty("image") byte[] image) {
 }

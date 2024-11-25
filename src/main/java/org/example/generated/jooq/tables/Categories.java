@@ -64,6 +64,11 @@ public class Categories extends TableImpl<CategoriesRecord> {
      */
     public final TableField<CategoriesRecord, String> TITLE = createField(DSL.name("title"), SQLDataType.NVARCHAR(2147483647).nullable(false), this, "");
 
+    /**
+     * The column <code>categories.image</code>.
+     */
+    public final TableField<CategoriesRecord, byte[]> IMAGE = createField(DSL.name("image"), SQLDataType.VARBINARY(2147483647), this, "");
+
     private Categories(Name alias, Table<CategoriesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

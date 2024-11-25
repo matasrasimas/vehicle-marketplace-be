@@ -14,7 +14,8 @@ public class UpsertPostDTO2DConverter {
                 input.model(),
                 input.manufactureYear(),
                 input.mileage(),
-                input.price()
+                input.price(),
+                input.image()
         );
     }
 }

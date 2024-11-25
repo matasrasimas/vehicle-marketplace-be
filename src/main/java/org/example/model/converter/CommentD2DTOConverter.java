@@ -10,7 +10,8 @@ public class CommentD2DTOConverter {
                 input.postId().toString(),
                 input.userId().toString(),
                 input.content(),
-                input.rating()
+                input.rating(),
+                input.createdAt()
         );
     }
 }

@@ -11,8 +11,7 @@ public class CreateUserDTO2DConverter {
                 input.lastName(),
                 input.phoneNumber(),
                 input.username(),
-                input.password(),
-                Role.valueOf(input.role())
+                input.password()
         );
     }
 }

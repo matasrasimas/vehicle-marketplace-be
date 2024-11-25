@@ -111,6 +111,11 @@ public class Posts extends TableImpl<PostsRecord> {
      */
     public final TableField<PostsRecord, Double> PRICE = createField(DSL.name("price"), SQLDataType.FLOAT.nullable(false), this, "");
 
+    /**
+     * The column <code>posts.image</code>.
+     */
+    public final TableField<PostsRecord, byte[]> IMAGE = createField(DSL.name("image"), SQLDataType.VARBINARY(2147483647), this, "");
+
     private Posts(Name alias, Table<PostsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

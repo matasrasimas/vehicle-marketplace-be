@@ -24,10 +24,12 @@ public class UpdateCategoryInteractor implements UpdateCategoryUseCase {
     @Override
     public void update(String categoryId, UpsertCategoryDTO dto) {
         Optional<Category> categoryToUpdate = gateway.retrieveById(categoryId);
-        if(categoryToUpdate.isEmpty())
+        if (categoryToUpdate.isEmpty())
             throw new ItemNotFoundException(String.format("category with id [%s] not found", categoryId));
         List<Category> existingCategories = gateway.retrieve();
-        if(existingCategories.stream().anyMatch(c -> c.title().equalsIgnoreCase(dto.title())))
+        if (existingCategories.stream()
+                .anyMatch(c -> c.title().equalsIgnoreCase(dto.title())
+                        && !c.id().equals(categoryToUpdate.get().id())))
             throw new ItemAlreadyExistsException(String.format("category with title [%s] already exists", dto.title()));
         gateway.update(categoryId, converter.convert(dto));
     }

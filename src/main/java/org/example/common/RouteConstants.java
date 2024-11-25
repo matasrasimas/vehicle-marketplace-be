@@ -19,5 +19,6 @@ public class RouteConstants {
     public static final String ROLE_PATH_PARAM = "/{role}";
     public static final String ROLE = "role";
     public static final String REAUTH_PATH = "/reauth";
+    public static final String AUTH_PATH = "/auth";
 
 }

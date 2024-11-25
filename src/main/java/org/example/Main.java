@@ -12,15 +12,13 @@ import org.example.gateway.postgres.PostgresCommentGateway;
 import org.example.gateway.postgres.PostgresPostGateway;
 import org.example.gateway.postgres.PostgresUserGateway;
 import org.example.model.converter.*;
-import org.example.route.auth.AuthenticateForAdminRoute;
-import org.example.route.auth.AuthenticateForUserRoute;
-import org.example.route.auth.LoginRoute;
-import org.example.route.auth.ReauthenticateRoute;
+import org.example.route.auth.*;
 import org.example.route.category.*;
 import org.example.route.comment.*;
 import org.example.route.post.*;
 import org.example.route.user.*;
 import org.example.usecase.api.auth.AuthenticateUseCase;
+import org.example.usecase.api.auth.ExtractUserFromJwtUseCase;
 import org.example.usecase.api.auth.LoginUseCase;
 import org.example.usecase.api.auth.ReauthenticateUseCase;
 import org.example.usecase.api.category.*;
@@ -31,6 +29,7 @@ import org.example.usecase.api.jwt.TokenValidator;
 import org.example.usecase.api.post.*;
 import org.example.usecase.api.user.*;
 import org.example.usecase.implementation.auth.AuthenticateInteractor;
+import org.example.usecase.implementation.auth.ExtractUserFromJwtInteractor;
 import org.example.usecase.implementation.auth.LoginInteractor;
 import org.example.usecase.implementation.auth.ReauthenticateInteractor;
 import org.example.usecase.implementation.category.*;
@@ -52,7 +51,6 @@ import org.jooq.impl.ThreadLocalTransactionProvider;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("hello world");
         Dotenv dotenv = Dotenv.configure().load();
 
         HikariConfig hikariConfig = new HikariConfig();
@@ -73,10 +71,12 @@ public class Main {
         DSLContext jooqDSLContext = DSL.using(jooqConfig);
 
         Flyway.configure()
-                .locations("classpath:db/migration", "org/example/db/migration")
+                .locations("org/example/db/migration")
                 .dataSource(hikariDataSource)
                 .load()
                 .migrate();
+
+
 
         CategoryD2DTOConverter categoryD2DTOConverter = new CategoryD2DTOConverter();
         UpsertCategoryDTO2DConverter upsertCategoryDTO2DConverter = new UpsertCategoryDTO2DConverter();
@@ -203,6 +203,11 @@ public class Main {
                 tokenGenerator
         );
         ReauthenticateUseCase reauthenticateUseCase = new ReauthenticateInteractor(tokenUpdater);
+        ExtractUserFromJwtUseCase extractUserFromJwtUseCase = new ExtractUserFromJwtInteractor(
+                userGateway,
+                tokenValidator,
+                userD2DTOConverter
+        );
 
         RetrieveCategoriesRoute retrieveCategoriesRoute = new RetrieveCategoriesRoute(retrieveCategoriesUseCase);
         RetrieveCategoryByIdRoute retrieveCategoryByIdRoute = new RetrieveCategoryByIdRoute(retrieveCategoryByIdUseCase);
@@ -231,6 +236,7 @@ public class Main {
         AuthenticateForAdminRoute authenticateForAdminRoute = new AuthenticateForAdminRoute(authenticateUseCase);
         AuthenticateForUserRoute authenticateForUserRoute = new AuthenticateForUserRoute(authenticateUseCase);
         ReauthenticateRoute reauthenticateRoute = new ReauthenticateRoute(reauthenticateUseCase);
+        ExtractUserFromJwtRoute extractUserFromJwtRoute = new ExtractUserFromJwtRoute(extractUserFromJwtUseCase);
 
         AppBuilder app = new AppBuilder(
                 retrieveCategoriesRoute,
@@ -259,7 +265,8 @@ public class Main {
                 loginRoute,
                 authenticateForAdminRoute,
                 authenticateForUserRoute,
-                reauthenticateRoute);
+                reauthenticateRoute,
+                extractUserFromJwtRoute);
         app.build();
     }
 }

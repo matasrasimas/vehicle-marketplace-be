@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id "com.microsoft.azure.azurewebapp" version "1.1.0"
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'org.example'
@@ -7,6 +9,19 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+azurewebapp {
+    subscription = 'eb891ef2-1dba-4377-a47d-30cc65c96c80'
+    resourceGroup = 'VehicleMarketplace'
+    appName = 'vehicle-marketplace-be'
+    pricingTier = 'P1v2'
+    region = 'westeurope'
+    runtime {
+        os = 'Linux'
+        webContainer = 'Java SE'
+        javaVersion = 'Java 21'
+    }
 }
 
 jar {
@@ -46,4 +61,14 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.named('jar') {
+    enabled = false
+}
+
+tasks.named('shadowJar') {
+    archiveBaseName.set('app')
+    archiveClassifier.set('')
+    archiveVersion.set('1.0')
 }

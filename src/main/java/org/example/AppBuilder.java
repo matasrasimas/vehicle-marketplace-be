@@ -3,10 +3,7 @@ package org.example;
 import io.javalin.Javalin;
 import io.javalin.http.HandlerType;
 import org.example.exception.JavalinExceptionHandler;
-import org.example.route.auth.AuthenticateForAdminRoute;
-import org.example.route.auth.AuthenticateForUserRoute;
-import org.example.route.auth.LoginRoute;
-import org.example.route.auth.ReauthenticateRoute;
+import org.example.route.auth.*;
 import org.example.route.category.*;
 import org.example.route.comment.*;
 import org.example.route.post.*;
@@ -43,6 +40,7 @@ public class AppBuilder {
     private final AuthenticateForAdminRoute authenticateForAdminRoute;
     private final AuthenticateForUserRoute authenticateForUserRoute;
     private final ReauthenticateRoute reauthenticateRoute;
+    private final ExtractUserFromJwtRoute extractUserFromJwtRoute;
 
     public AppBuilder(RetrieveCategoriesRoute retrieveCategoriesRoute,
                       RetrieveCategoryByIdRoute retrieveCategoryByIdRoute,
@@ -70,7 +68,8 @@ public class AppBuilder {
                       LoginRoute loginRoute,
                       AuthenticateForAdminRoute authenticateForAdminRoute,
                       AuthenticateForUserRoute authenticateForUserRoute,
-                      ReauthenticateRoute reauthenticateRoute) {
+                      ReauthenticateRoute reauthenticateRoute,
+                      ExtractUserFromJwtRoute extractUserFromJwtRoute) {
         this.retrieveCategoriesRoute = retrieveCategoriesRoute;
         this.retrieveCategoryByIdRoute = retrieveCategoryByIdRoute;
         this.createCategoryRoute = createCategoryRoute;
@@ -98,6 +97,7 @@ public class AppBuilder {
         this.authenticateForAdminRoute = authenticateForAdminRoute;
         this.authenticateForUserRoute = authenticateForUserRoute;
         this.reauthenticateRoute = reauthenticateRoute;
+        this.extractUserFromJwtRoute = extractUserFromJwtRoute;
     }
 
     public Javalin build() {
@@ -111,7 +111,7 @@ public class AppBuilder {
         });
 
         app.exception(Exception.class, new JavalinExceptionHandler());
-        app.start(80);
+        app.start(8080);
         return app;
     }
 
@@ -122,6 +122,11 @@ public class AppBuilder {
         path(USERS_PATH, this::createUsersRoutes);
         post(LOGIN_PATH, loginRoute::execute);
         post(REAUTH_PATH, reauthenticateRoute::execute);
+        path(AUTH_PATH, this::createAuthRoutes);
+    }
+
+    private void createAuthRoutes() {
+        get(EMPTY, extractUserFromJwtRoute::execute);
     }
 
     private void createCategoriesRoutes() {
@@ -187,10 +192,6 @@ public class AppBuilder {
     }
 
     private void createUsersRoutes() {
-        before(EMPTY, ctx -> {
-            if (ctx.method().equals(HandlerType.GET))
-                authenticateForAdminRoute.execute(ctx);
-        });
         get(EMPTY, retrieveUsersRoute::execute);
         path(USER_ID_PATH_PARAM, this::createUserIdRoutes);
         post(EMPTY, createUserRoute::execute);

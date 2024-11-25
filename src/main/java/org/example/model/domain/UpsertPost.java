@@ -11,6 +11,7 @@ public class UpsertPost {
     private final int manufactureYear;
     private final Double mileage;
     private final Double price;
+    private final byte[] image;
 
     public UpsertPost(UUID categoryId,
                       String description,
@@ -18,7 +19,8 @@ public class UpsertPost {
                       String model,
                       int manufactureYear,
                       Double mileage,
-                      Double price) {
+                      Double price,
+                      byte[] image) {
         this.categoryId = categoryId;
         this.description = description;
         this.brand = brand;
@@ -26,6 +28,7 @@ public class UpsertPost {
         this.manufactureYear = manufactureYear;
         this.mileage = mileage;
         this.price = price;
+        this.image = image;
     }
 
     public UUID getCategoryId() {
@@ -54,5 +57,9 @@ public class UpsertPost {
 
     public Double getPrice() {
         return price;
+    }
+
+    public byte[] getImage() {
+        return image;
     }
 }

@@ -13,6 +13,7 @@ public class Post {
     private final int manufactureYear;
     private final Double mileage;
     private final Double price;
+    private final byte[] image;
 
     public Post(UUID id,
                 UUID categoryId,
@@ -22,7 +23,8 @@ public class Post {
                 String model,
                 int manufactureYear,
                 Double mileage,
-                Double price) {
+                Double price,
+                byte[] image) {
         this.id = id;
         this.categoryId = categoryId;
         this.userId = userId;
@@ -32,6 +34,7 @@ public class Post {
         this.manufactureYear = manufactureYear;
         this.mileage = mileage;
         this.price = price;
+        this.image = image;
     }
 
     public UUID getId() {
@@ -68,5 +71,9 @@ public class Post {
 
     public Double getPrice() {
         return price;
+    }
+
+    public byte[] getImage() {
+        return image;
     }
 }

@@ -123,6 +123,32 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
         return (Integer) get(4);
     }
 
+    /**
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
+     */
+    @Deprecated
+    public void setCreatedAt(Object value) {
+        set(5, value);
+    }
+
+    /**
+     * @deprecated Unknown data type. If this is a qualified, user-defined type,
+     * it may have been excluded from code generation. If this is a built-in
+     * type, you can define an explicit {@link org.jooq.Binding} to specify how
+     * this type should be handled. Deprecation can be turned off using
+     * {@literal <deprecationOnUnknownTypes/>} in your code generator
+     * configuration.
+     */
+    @Deprecated
+    public Object getCreatedAt() {
+        return get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -146,7 +172,7 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
     /**
      * Create a detached, initialised CommentsRecord
      */
-    public CommentsRecord(Object id, Object postId, Object userId, String content, Integer rating) {
+    public CommentsRecord(Object id, Object postId, Object userId, String content, Integer rating, Object createdAt) {
         super(Comments.COMMENTS);
 
         setId(id);
@@ -154,6 +180,7 @@ public class CommentsRecord extends UpdatableRecordImpl<CommentsRecord> {
         setUserId(userId);
         setContent(content);
         setRating(rating);
+        setCreatedAt(createdAt);
         resetChangedOnNotNull();
     }
 }
